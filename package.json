@@ -1,0 +1,81 @@
+{
+  "name": "vscode-llbd",
+  "displayName": "LLDB Debugger",
+  "version": "0.1.0",
+  "publisher": "Anarcy Tools",
+  "description": "An extension to support LLDB debugging within VS Code.",
+  "author": {
+    "name": "David Owens II"
+  },
+  "engines": {
+    "vscode": "^1.0"
+  },
+  "icon": "images/mock-debug-icon.svg",
+  "categories": [
+    "Debuggers"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnarchyTools/vscode-lldb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AnarchyTools/vscode-lldb/issues"
+  },
+  "dependencies": {
+    "vscode-debugprotocol": "1.8.0-pre.3",
+    "vscode-debugadapter": "1.8.0-pre.4"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.5",
+    "mocha": "^2.4.5",
+    "vscode-debugadapter-testsupport": "1.8.0-pre.3"
+  },
+  "scripts": {
+    "prepublish": "node ./node_modules/typescript/bin/tsc -p ./src",
+    "compile": "node ./node_modules/typescript/bin/tsc -p ./src",
+    "watch": "node ./node_modules/typescript/bin/tsc -w -p ./src",
+    "test": "node ./node_modules/mocha/bin/mocha -u tdd ./out/tests/"
+  },
+  "contributes": {
+    "debuggers": [
+      {
+        "type": "lldb",
+        "label": "LLDB Debugger",
+
+        "enableBreakpointsFor": { "languageIds": [ "swift" ] },
+
+        "program": "./out/lldb-debugger.js",
+        "runtime": "node",
+
+        "configurationAttributes": {
+          "launch": {
+            "required": [ "program" ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Workspace relative path to a text file.",
+                "default": "main.swift"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Automatically stop after launch.",
+                "default": true
+              }
+            }
+          }
+        },
+
+        "initialConfigurations": [
+          {
+            "name": "Debug with LLDB",
+            "type": "lldb",
+            "request": "launch",
+            "program": "main.swift",
+            "stopOnEntry": true
+          }
+        ]
+      }
+    ]
+  }
+}
